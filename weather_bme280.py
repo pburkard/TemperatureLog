@@ -12,7 +12,7 @@ t_fine = 0.0
 
 class BME280:
 	def __init__(self, address = I2C_ADDR, bus = I2C_BUS):
-		self.logger = logging.getLogger(f"MarsRover.EnvironmentHat.{BME280.__name__}")
+		self.logger = logging.getLogger(f"EnvironmentLog.Weather")
 		self.i2c = smbus2.SMBus(bus)
 		self.address = address
 		self.calib = []
@@ -128,7 +128,7 @@ class BME280:
 			data.append(self.i2c.read_byte_data(self.address, i))
 		tempRaw = (data[0] << 12) | (data[1] << 4) | (data[2] >> 4)
 		temperature = self._compensate_T(tempRaw)
-		self.logger.info(f"temperature: {round(temperature, 3)} ℃")
+		# self.logger.info(f"temperature: {round(temperature, 3)} ℃")
 		return temperature
 
 	def getPressure(self):
@@ -137,7 +137,7 @@ class BME280:
 			data.append(self.i2c.read_byte_data(self.address, i))
 		pressureRaw = (data[0] << 12) | (data[1] << 4) | (data[2] >> 4)
 		pressure = self._compensate_P(pressureRaw)
-		self.logger.info(f"pressure: {round(pressure/100, 3)} hPa")
+		# self.logger.info(f"pressure: {round(pressure/100, 3)} hPa")
 		return pressure
 
 	def getHumidity(self):
@@ -146,7 +146,7 @@ class BME280:
 			data.append(self.i2c.read_byte_data(self.address, i))
 		hum_raw  = (data[0] << 8)  |  data[1]
 		var_h = self._compensate_H(hum_raw)
-		self.logger.info(f"humidity: {round(var_h, 3)} ％")
+		# self.logger.info(f"humidity: {round(var_h, 3)} ％")
 		return var_h
 
 # if __name__ == '__main__':

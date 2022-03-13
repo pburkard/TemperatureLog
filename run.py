@@ -2,12 +2,16 @@ import logging
 import os
 import datetime
 from weather_bme280 import BME280
+from uv_ltr390 import LTR390
+from light_tsl2591 import TSL2591
 
 i2c_bus_number = 3
 i2c_address = 0x76
 weatherSensor = BME280(address=i2c_address, bus=i2c_bus_number)
+lightSensor = TSL2591(bus=i2c_bus_number)
+uvSensor = LTR390(bus=i2c_bus_number)
 
-logger = logging.getLogger("TemperatureLog")
+logger = logging.getLogger("EnvironmentLog")
 filelogger_dir_name = "logfiles"
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
@@ -37,4 +41,23 @@ def get_pressure() -> float:
 def get_humidity() -> float:
     return weatherSensor.getHumidity()
 
-logger.info(get_temperature())
+def get_lux() -> float:
+    return lightSensor.get_lux()
+
+def get_uv() -> float:
+    return uvSensor.getUV()
+
+def get_als() -> float:
+    return uvSensor.getALS()
+
+def log_environment_data():
+    logger.info("----- measurement start -----")
+    logger.info(f"Temperature: {get_temperature()} °C")
+    logger.info(f"Pressure: {get_pressure()} hPa")
+    logger.info(f"Humidity: {get_humidity()} %")
+    logger.info(f"Lux: {get_lux()}")
+    logger.info(f"UV: {get_uv()}")
+    logger.info(f"ALS: {get_als()}")
+    logger.info("----- measurement end -----")
+
+log_environment_data()
