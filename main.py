@@ -2,9 +2,9 @@ import logging
 import os
 import datetime
 import time
-from weather_bme280 import BME280
-from uv_ltr390 import LTR390
-from light_tsl2591 import TSL2591
+from modules.weather_bme280 import BME280
+from modules.uv_ltr390 import LTR390
+from modules.light_tsl2591 import TSL2591
 
 i2c_bus_number = 1
 i2c_address = 0x76
