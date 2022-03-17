@@ -1,8 +1,9 @@
 # Temperature Logging
 Components used for this project:
 - Raspberry Pi 4b running Raspbian
-- Environment hat
+- Waveshare environment sensor hat
 - venv
+- clone project in home/pi/ or change path below
 
 To run file automatically, I used crontab:
 1. open terminal
