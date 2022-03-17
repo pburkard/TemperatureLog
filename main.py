@@ -1,6 +1,7 @@
 import logging
 import os
 import datetime
+import time
 from weather_bme280 import BME280
 from uv_ltr390 import LTR390
 from light_tsl2591 import TSL2591
@@ -52,12 +53,20 @@ def get_als() -> float:
 
 def log_environment_data():
     logger.info("----- measurement start -----")
-    logger.info(f"Temperature: {get_temperature()} °C")
-    logger.info(f"Pressure: {get_pressure()} hPa")
-    logger.info(f"Humidity: {get_humidity()} %")
-    logger.info(f"Lux: {get_lux()}")
-    logger.info(f"UV: {get_uv()}")
-    logger.info(f"ALS: {get_als()}")
-    logger.info("----- measurement end -----")
+    try:
+        logger.info(f"Temperature: {get_temperature()} °C")
+        logger.info(f"Pressure: {get_pressure()} hPa")
+        logger.info(f"Humidity: {get_humidity()} %")
+    except Exception as ex:
+        logger.error(ex)
+    try:
+        logger.info(f"Lux: {get_lux()}")
+    except Exception as ex:
+        logger.error(ex)
+    try:
+        logger.info(f"UV: {get_uv()}")
+        logger.info(f"ALS: {get_als()}")
+    except Exception as ex:
+        logger.error(ex)
 
 log_environment_data()
