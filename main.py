@@ -6,7 +6,7 @@ from weather_bme280 import BME280
 from uv_ltr390 import LTR390
 from light_tsl2591 import TSL2591
 
-i2c_bus_number = 3
+i2c_bus_number = 1
 i2c_address = 0x76
 weatherSensor = BME280(address=i2c_address, bus=i2c_bus_number)
 lightSensor = TSL2591(bus=i2c_bus_number)
