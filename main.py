@@ -6,7 +6,7 @@ from modules.weather_bme280 import BME280
 from modules.uv_ltr390 import LTR390
 from modules.light_tsl2591 import TSL2591
 
-i2c_bus_number = 1
+i2c_bus_number = 3
 i2c_address = 0x76
 weatherSensor = BME280(address=i2c_address, bus=i2c_bus_number)
 lightSensor = TSL2591(bus=i2c_bus_number)
@@ -51,10 +51,19 @@ def get_uv() -> float:
 def get_als() -> float:
     return uvSensor.getALS()
 
+def save_temperature_to_file(temperature, time):
+    File_object = open(rf"data/{datetime.date.today().strftime('%d-%m-%Y')}.txt", "a")
+    File_object.write(f"{time},{str(temperature)}\n")
+    File_object.close()
+
 def log_environment_data():
     logger.info("----- measurement start -----")
     try:
-        logger.info(f"Temperature: {get_temperature()} °C")
+        time = datetime.datetime.now()
+        hour = f"{time.hour}:{time.minute}"
+        temperature = get_temperature()
+        logger.info(f"Temperature: {temperature} °C")
+        save_temperature_to_file(round(temperature, 1), hour)
         logger.info(f"Pressure: {get_pressure()} hPa")
         logger.info(f"Humidity: {get_humidity()} %")
     except Exception as ex:
@@ -68,5 +77,9 @@ def log_environment_data():
         logger.info(f"ALS: {get_als()}")
     except Exception as ex:
         logger.error(ex)
+    # try:
+    #     take
+    # except Exception as ex:
+    #     logger.error(ex)
 
 log_environment_data()
